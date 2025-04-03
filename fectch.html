@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <img id="cocktailImage" alt="Cocktail Image" width="400px" height="400px" style="display: block; margin:  0 auto;"/>
+  <input type="text" id="cocktailInput" placeholder="Enter cocktail name" />
+  <button id="searchBtn" style="margin-bottom: 20px;">Search Cocktail</button>
+  
+
+  
+  <script>
+
+    // searching with params
+
+
+const cocktailInput = document.querySelector('#cocktailInput');
+function fetchCocktailImage() {
+  const cocktailName = cocktailInput.value;
+  const url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${cocktailName}`;
+
+  fetch(url, {
+    method: 'GET',
+  })
+    .then(res => res.json())  // Parse the response as JSON
+    .then(data => {
+      if (data.drinks && data.drinks.length > 0) {
+        const cocktail = data.drinks[0];  // Get the first cocktail result
+        const imageUrl = cocktail.strDrinkThumb;  // Get the cocktail image URL
+        cocktailImage.src = imageUrl;  // Set the image source
+        console.log(cocktail);  // Log the full cocktail data
+      } else {
+        console.log('No cocktails found');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching cocktail image:', error);  // Handle errors
+    });
+}
+
+// Trigger fetch when the button is clicked
+searchBtn.addEventListener('click', fetchCocktailImage);
+
+  </script>
+</body>
+</html>
+
